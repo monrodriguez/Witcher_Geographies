@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet Map with WebP Background</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+        }
+        .leaflet-grid-label {
+            font-size: 12px;
+            color: #000;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map', {
+            crs: L.CRS.Simple,
+            minZoom: -5,
+            maxZoom: 5
+        });
+
+        // Define the dimensions of the image
+        var w = 1685,
+            h = 2635,
+            url = 'C:/Users/jo1jrr/Documents/Research Projects/Witcher - Feb25/cbf828d56f796695a53248cc0a8a2dcc.webp';
+
+        // Calculate the bounds of the image
+        var southWest = map.unproject([0, h], map.getMaxZoom());
+        var northEast = map.unproject([w, 0], map.getMaxZoom());
+        var bounds = new L.LatLngBounds(southWest, northEast);
+
+        // Add the image overlay to the map
+        var imageLayer = L.imageOverlay(url, bounds).addTo(map);
+
+        // Set the view to the bounds of the image
+        map.setMaxBounds(bounds);
+        map.fitBounds(bounds);
+
+        // Center the 0,0 point in the middle of the image
+        var center = map.unproject([w / 2, h / 2], map.getMaxZoom());
+        map.setView(center, map.getMaxZoom());
+
+        // Add a red marker at the 0,0 point
+        var zeroMarker = L.marker(center, {
+            icon: L.icon({
+                iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-red.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        }).addTo(map).bindPopup('0, 0');
+
+        // Add markers for each point in the DataFrame
+        var points = [{'name': 'Rivia', 'lat': 438.1, 'long': 500.5}, {'name': 'Cintra', 'lat': 159.0, 'long': -201.5}, {'name': 'Kaer Morhen', 'lat': 1250.0, 'long': 677.5}, {'name': 'Oxenfurt', 'lat': 660.0, 'long': -224.5}, {'name': 'Sodden Hill (approx)', 'lat': 175.0, 'long': 160.5}, {'name': 'Nilfgaard (city)', 'lat': -1180.0, 'long': 67.5}, {'name': 'Vizima', 'lat': 620.0, 'long': 0.5}, {'name': 'Ellander', 'lat': 620.0, 'long': 170.5}, {'name': 'Murivel', 'lat': 808.0, 'long': 150.5}, {'name': 'Blaviken', 'lat': 1019.0, 'long': -170.0}, {'name': 'Upper Posada', 'lat': 778.0, 'long': 707.0}, {'name': 'Lower Posada', 'lat': 763.0, 'long': 706.0}, {'name': 'Rinde', 'lat': 722.0, 'long': -14.0}, {'name': 'Narok', 'lat': 1250.0, 'long': -750.0}, {'name': 'Novigrad', 'lat': 663.0, 'long': -268.0}, {'name': 'Bremervoord', 'lat': 450.0, 'long': -455.0}, {'name': 'River Adalatte', 'lat': 430.0, 'long': -275.0}, {'name': 'Brugge (city)', 'lat': 330.0, 'long': 45.0}, {'name': '(Gors) Velen', 'lat': 527.0, 'long': -208.0}, {'name': 'Hengfors', 'lat': 1120.0, 'long': 108.0}, {'name': 'Ard Carraigh', 'lat': 1077.0, 'long': 448.0}, {'name': 'Barefield (Holopole)', 'lat': 1187.0, 'long': 138.0}, {'name': 'Chiava Pustula - ', 'lat': 1235.0, 'long': 158.0}, {'name': "Dragons Fang's", 'lat': 430.0, 'long': -480.0}, {'name': 'Vengerberg', 'lat': 580.0, 'long': 518.0}, {'name': 'Duen Canell', 'lat': 320.0, 'long': -128.0}, {'name': 'Thanedd (island)', 'lat': 537.0, 'long': -225.0}, {'name': 'Carreras', 'lat': 542.0, 'long': 215.0}, {'name': 'Burdoff', 'lat': 515.0, 'long': -28.5}, {'name': 'Dorian', 'lat': 485.0, 'long': -49.5}, {'name': 'Anchor', 'lat': 538.0, 'long': -101.5}, {'name': 'Crane Marsh', 'lat': 660.0, 'long': -189.5}, {'name': 'Grabowa Bay', 'lat': 635.0, 'long': -226.5}, {'name': 'Shaerrawedd', 'lat': 900.0, 'long': 498.5}, {'name': 'Maribor', 'lat': 463.0, 'long': 157.5}, {'name': 'Pont Vanis', 'lat': 1010.0, 'long': -470.5}, {'name': 'Glysswen', 'lat': -495.0, 'long': 593.5}, {'name': 'Korath (desert)', 'lat': -495.0, 'long': 773.5}, {'name': 'Fen Aspra', 'lat': -590.0, 'long': 510.5}, {'name': 'Tyffia', 'lat': -543.0, 'long': 465.5}, {'name': 'Dillingen', 'lat': 217.0, 'long': -3.5}, {'name': 'Turlough hills', 'lat': 263.0, 'long': 29.5}, {'name': 'River O', 'lat': 280.0, 'long': 65.5}, {'name': 'Fen Carn', 'lat': 274.0, 'long': 82.5}, {'name': 'Drui', 'lat': -522.0, 'long': 388.5}, {'name': 'Armeria', 'lat': 285.0, 'long': 102.5}, {'name': 'Ceann Treise (Ribbon river)', 'lat': 328.0, 'long': -10.5}, {'name': 'Loredo', 'lat': -515.0, 'long': 353.5}, {'name': 'Carbon', 'lat': 471.0, 'long': 327.5}, {'name': 'Montecalvo', 'lat': 891.0, 'long': 164.5}, {'name': 'Ysgith', 'lat': 324.0, 'long': 315.5}, {'name': 'Drigh Shot', 'lat': 209.0, 'long': -100.5}, {'name': 'Bridge on Yaruga (Caed Dhu)', 'lat': 299.0, 'long': 425.5}, {'name': 'Unicorn (village)', 'lat': -520.0, 'long': -95.5}, {'name': 'Jealousy / Birka', 'lat': -525.0, 'long': 200.5}, {'name': 'Bridge in Red Port (Yaruga)', 'lat': 290.0, 'long': 300.5}, {'name': 'Kaer Trolde', 'lat': 108.0, 'long': -478.5}, {'name': 'Rocayne', 'lat': -578.0, 'long': 230.5}, {'name': 'Fano', 'lat': -525.0, 'long': 48.5}, {'name': 'Claremont', 'lat': -546.0, 'long': -4.5}, {'name': 'Riedbrune', 'lat': 73.0, 'long': 405.5}, {'name': 'Belhaven', 'lat': 25.0, 'long': 381.5}, {'name': 'Myrkvid Grove (forest)', 'lat': -10.0, 'long': 490.5}, {'name': 'Beauclair', 'lat': -90.0, 'long': 530.5}, {'name': 'Hindasfjall', 'lat': 108.0, 'long': -393.5}, {'name': 'Sedna Abyss', 'lat': 20.0, 'long': -290.5}, {'name': 'Dun Dare', 'lat': -565.0, 'long': -108.5}, {'name': 'Loch Eskalott', 'lat': 428.0, 'long': 485.5}, {'name': 'Tir na Bea Arainne', 'lat': 37.0, 'long': 415.5}, {'name': 'Baccala', 'lat': -1330.0, 'long': 52.5}, {'name': 'Stoks', 'lat': 65.0, 'long': 366.5}];
+        var markerLayers = {};
+
+        points.forEach(function(point) {
+            // Adjust coordinates to be relative to the center
+            var adjustedLong = point.long + w / 2;
+            var adjustedLat = (h / 2) - point.lat;
+            var marker = L.marker(map.unproject([adjustedLong, adjustedLat], map.getMaxZoom())).bindPopup(point.name + ' : '+ point.lat + ', ' + point.long);
+            markerLayers[point.name] = L.layerGroup([marker]).addTo(map);
+        });
+
+        // Add grid lines and labels
+        function addGridLines(map, bounds, interval) {
+            var gridLayer = L.layerGroup();
+            var xStart = -w / 55 + 30;
+            var xEnd = w / 30 - 1;
+            var yStart = -h / 30 + 1;
+            var yEnd = h / 50 - 50;
+
+            for (var x = xStart; x <= xEnd; x += interval) {
+                var xLine = L.polyline([[yStart, x], [yEnd, x]], {color: 'gray', weight: 1, opacity: 0.5}).addTo(gridLayer);
+                var xLabel = L.divIcon({className: 'leaflet-grid-label', html: x.toFixed(0)});
+                L.marker([yStart, x], {icon: xLabel, interactive: true}).addTo(gridLayer);
+                L.marker([yEnd, x], {icon: xLabel, interactive: true}).addTo(gridLayer);  // Add label at the top edge
+            }
+
+            for (var y = yStart; y <= yEnd; y += interval) {
+                var yLine = L.polyline([[y, xStart], [y, xEnd]], {color: 'gray', weight: 1, opacity: 1}).addTo(gridLayer);
+                var yLabel = L.divIcon({className: 'leaflet-grid-label', html: y.toFixed(0)});
+                L.marker([y, xStart], {icon: yLabel, interactive: true}).addTo(gridLayer);
+                L.marker([y, xEnd], {icon: yLabel, interactive: true}).addTo(gridLayer);  // Add label at the right edge
+            }
+
+            gridLayer.addTo(map);
+
+            // Update label positions on zoom
+            map.on('zoomend', function() {
+                gridLayer.eachLayer(function(layer) {
+                    if (layer instanceof L.Marker) {
+                        var latLng = layer.getLatLng();
+                        var newLatLng = map.unproject(map.project(latLng, map.getMaxZoom()), map.getZoom());
+                        layer.setLatLng(newLatLng);
+                    }
+                });
+            });
+        }
+
+        addGridLines(map, bounds, 10);  // Adjusted interval to 10 for a tighter grid
+
+        // Add layer control
+        var baseLayers = {
+            "Image Layer": imageLayer
+        };
+
+        var overlayLayers = {
+            "Zero Marker": zeroMarker
+        };
+
+        // Add each marker layer to the overlay layers
+        for (var name in markerLayers) {
+            overlayLayers[name] = markerLayers[name];
+        }
+
+        L.control.layers(baseLayers, overlayLayers).addTo(map);
+    </script>
+</body>
+</html>
